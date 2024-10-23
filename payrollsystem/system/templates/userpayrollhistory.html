@@ -1,0 +1,114 @@
+{% extends "usernavbar.html" %}
+
+
+
+{% block style %}
+<title>Payroll History</title>
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'Nunito', sans-serif;
+        color: #384047;
+        margin: 0; /* Add margin reset for the body */
+    }
+
+    form {
+        max-width: 300px;
+        margin: 10px auto;
+        padding: 10px 20px;
+        background: #ffffff;
+        border-radius: 8px;
+    }
+
+    h1 {
+        margin: 0 0 30px;
+        text-align: center;
+    }
+
+    fieldset {
+        border: none;
+    }
+
+    label {
+        display: block;
+    }
+
+
+    @media screen and (min-width: 600px) {
+        form {
+            max-width: 800px;
+        }
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse; /* Ensures no space between borders */
+    }
+
+    th,
+    td {
+        padding: 8px; /* Add some padding for spacing */
+        text-align: left; /* Align text to the left */
+        vertical-align: middle; /* Vertical alignment for all table cells */
+    }
+
+    .view-btn {
+        font-size: 14px;
+        padding: 5px 10px;
+        background: linear-gradient(to bottom left, #EF8D9C 40%, #FFC39E 100%);
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        height: 36px; /* Set a consistent height */
+        box-sizing: border-box; /* Include padding in height */
+        display: flex; /* Use flex to align content properly */
+        align-items: center; /* Center align button text vertically */
+        justify-content: center; /* Center align button text horizontally */
+    }
+
+    .view-btn:hover {
+        background: linear-gradient(to bottom left, #FFC39E 40%, #EF8); 
+    }
+
+</style>
+
+{% endblock %}
+
+
+
+{% block form %}
+<div class="row">
+    <div class="col-md-12">
+        <form action="{% url 'userhistory' %}" method="get">
+            <h1>Payroll History</h1>
+            <fieldset>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>PAY PERIOD</th>
+                            <th>SALARY</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for payslip in payslip_list %}
+                        <tr>
+                            <td>{{ payslip.PAYSLIPpayperiodstart }} TO {{ payslip.PAYSLIPpayperiodend }}</td>
+                            <td>RM {{ payslip.PAYSLIPtotalsalary }}</td>
+                            <td style="text-align: center;">
+                                <button type="submit" class="view-btn" name="payperiodstart" value="{{ payslip.PAYSLIPpayperiodstart }}">View Details</button>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </fieldset>
+        </form>
+
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,168 @@
+{% extends "hrnavbar.html" %}
+
+
+
+{% block style %}
+<title>Report Generator</title>
+
+<style>
+    *,
+*:before,
+*:after {
+ box-sizing: border-box;
+}
+
+body {
+ font-family: 'Nunito', sans-serif;
+ color: #384047;
+ margin: 0; /* Add margin reset for the body */
+}
+
+form {
+ max-width: 300px;
+ margin: 10px auto;
+ padding: 10px 20px;
+ background: #ffffff;
+ border-radius: 8px;
+}
+
+h1 {
+ margin: 0 0 30px;
+ text-align: center;
+}
+
+input[type="text"],
+input[type="date"],
+textarea,
+select {
+ background-color: #e8eeef;
+ border: none;
+ font-size: 16px;
+ height: 36px; /* Consistent height for input fields */
+ padding: 5px; /* Padding for input fields */
+ width: 100%;
+ color: #8a97a0;
+ box-shadow: 0 1px 0 rgba(0, 0, 0, 0.03) inset;
+ margin-bottom: 30px;
+}
+
+#generate{
+ padding: 19px 39px;
+ color: #FFF;
+ background: linear-gradient(to bottom left, #EF8D9C 40%, #FFC39E 100%);
+ font-size: 18px;
+ text-align: center;
+ border-radius: 5px;
+ width: 100%;
+ border: 0px ;
+ box-shadow: 0 -1px 0 rgba(255, 255, 255, 0.1) inset;
+}
+
+#generate:hover {
+        background: linear-gradient(to bottom left, #FFC39E 40%, #EF8);
+    }
+
+fieldset {
+ border: none;
+}
+
+legend {
+ font-size: 1.4em;
+}
+
+label {
+ display: block;
+}
+
+
+
+@media screen and (min-width: 480px) {
+ form {
+     max-width: 560px;
+ }
+}
+
+table {
+ width: 100%;
+ border-collapse: collapse; /* Ensures no space between borders */
+}
+
+th,
+td {
+ padding: 8px; /* Add some padding for spacing */
+ text-align: left; /* Align text to the left */
+ vertical-align: middle; /* Vertical alignment for all table cells */
+}
+
+
+
+
+ </style>
+
+{% endblock %}
+
+
+
+
+{% block form %}
+
+<div class="row">
+    <div class="col-md-12">
+      <form action="{% url 'hrreport' %}" method="get">
+        {% csrf_token %}
+        <h1> Payroll Report </h1>
+        
+        <fieldset>
+          
+          <legend> Select Pay Period</legend>
+            
+          <table id="workTable">
+            <tr>
+                <th>Start Date</th>
+                <th>End Date</th>
+
+            </tr>
+            <tr>
+              <td>
+                <select id="start_date" name="start_date" onchange="updateEndDate()">
+                  <option default=""></option>
+                  {% for payslip in payslip_list %}
+                  <option value="{{payslip.PAYSLIPpayperiodstart}}" enable>{{payslip.PAYSLIPpayperiodstart}}</option>
+                  {% endfor %}
+                </select>
+                </td>
+                <td><input id="end_date" type="date" name="end_date" readonly></td>
+                </td>
+            </tr>
+          </table>
+
+        </fieldset>
+
+        <button id="generate">Generate</button>
+        
+       </form>
+        </div>
+      </div>
+
+
+
+
+      <script>
+        function updateEndDate() {
+            const startDateSelect = document.getElementById('start_date');
+            const endDateInput = document.getElementById('end_date');
+    
+            const selectedDate = new Date(startDateSelect.value);
+            // Add 7 days
+            selectedDate.setDate(selectedDate.getDate() + 6);
+    
+            // Format the date to YYYY-MM-DD
+            const year = selectedDate.getFullYear();
+            const month = String(selectedDate.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+            const day = String(selectedDate.getDate()).padStart(2, '0');
+    
+            endDateInput.value = `${year}-${month}-${day}`;
+        }
+    </script>
+
+{% endblock %}

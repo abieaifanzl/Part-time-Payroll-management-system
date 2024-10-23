@@ -1,0 +1,439 @@
+{% extends "hrnavbar.html" %}
+
+
+
+{% block style %}
+
+<title>Payroll Generator</title>
+
+<style>
+    *,
+*:before,
+*:after {
+ box-sizing: border-box;
+}
+
+body {
+ font-family: 'Nunito', sans-serif;
+ color: #384047;
+ margin: 0; /* Add margin reset for the body */
+}
+
+form {
+ max-width: 300px;
+ margin: 10px auto;
+ padding: 10px 20px;
+ background: #ffffff;
+ border-radius: 8px;
+}
+
+h1 {
+ margin: 0 0 30px;
+ text-align: center;
+}
+
+input[type="text"],
+input[type="date"],
+textarea,
+select {
+ background-color: #e8eeef;
+ border: none;
+ font-size: 16px;
+ height: 36px; /* Consistent height for input fields */
+ padding: 5px; /* Padding for input fields */
+ width: 100%;
+ color: #8a97a0;
+ box-shadow: 0 1px 0 rgba(0, 0, 0, 0.03) inset;
+ margin-bottom: 30px;
+}
+
+#generate{
+ padding: 19px 39px;
+ color: #FFF;
+ background: linear-gradient(to bottom left, #EF8D9C 40%, #FFC39E 100%);
+ font-size: 18px;
+ text-align: center;
+ border-radius: 5px;
+ width: 100%;
+ border: 0px ;
+ box-shadow: 0 -1px 0 rgba(255, 255, 255, 0.1) inset;
+ cursor: pointer;
+}
+
+#generate:hover {
+        background: linear-gradient(to bottom left, #FFC39E 40%, #EF8);
+    }
+
+
+fieldset {
+ border: none;
+}
+
+legend {
+ font-size: 1.4em;
+}
+
+label {
+ display: block;
+}
+
+.number {
+ background: linear-gradient(to bottom left, #EF8D9C 40%, #FFC39E 100%);
+ color: #fff;
+ height: 30px;
+ width: 30px;
+ display: inline-block;
+ font-size: 0.8em;
+ margin-right: 4px;
+ line-height: 30px;
+ text-align: center;
+ text-shadow: 0 1px 0 rgba(255, 255, 255, 0.2);
+ border-radius: 100%;
+}
+
+@media screen and (min-width: 480px) {
+ form {
+     max-width: 560px;
+ }
+}
+
+table {
+ width: 100%;
+ border-collapse: collapse; /* Ensures no space between borders */
+}
+
+th,
+td {
+ padding: 8px; /* Add some padding for spacing */
+ text-align: left; /* Align text to the left */
+ vertical-align: middle; /* Vertical alignment for all table cells */
+}
+
+
+
+/* Ensure consistent height for delete button */
+.delete-row-btn {
+ font-size: 14px;
+ padding: 5px 10px;
+ background-color: #ff4d4d;
+ color: white;
+ border: none;
+ border-radius: 4px;
+ cursor: pointer;
+ height: 36px; /* Set a consistent height */
+ box-sizing: border-box; /* Include padding in height */
+ display: flex; /* Use flex to align content properly */
+ align-items: center; /* Center align button text vertically */
+ justify-content: center; /* Center align button text horizontally */
+}
+
+.delete-row-btn:hover {
+ background-color: #ff1a1a; /* Optional: Adjust button hover effect */
+}
+
+.invalid {
+	color: red;
+	font-size: small;
+    text-align: center;
+}
+
+
+ </style>
+
+
+{% endblock %}
+
+
+
+
+{% block form %}
+
+<div class="row">
+    <div class="col-md-12">
+      <form action="{% url 'hrpayroll' %}" method="get">
+        {% csrf_token %}
+
+        <h1> Employee Payroll </h1>
+        
+        <fieldset>
+          
+          <legend><span class="number">1</span> Employee Info</legend>
+        
+          <label for="name">Name:</label>
+          <select id="name" name="staff_name" >
+            {% for parttime in parttime_list %}
+            <option value="{{parttime.PTname}}">{{parttime.PTname}}</option>
+            {% endfor %}
+          </select>
+        </fieldset>
+
+        <fieldset>
+          
+            <legend><span class="number">2</span>Pay Period</legend>
+              
+            <table id="workTable">
+              <tr>
+                  <th>Start Date</th>
+                  <th>End Date</th>
+  
+              </tr>
+              <tr>
+                  <td><input type="date" name="payperiod_start" onchange="autoFillDates()"></td>
+                  <td><input type="date" name="payperiod_end" readonly></td>
+
+              </tr>
+            </table>
+  
+          </fieldset>
+
+        <fieldset>  
+        
+          <legend><span class="number">3</span> Work Info</legend>
+          
+          
+          <table id="workTable">
+            <tr>
+                <th>Work Date</th>
+                <th>Work Hour</th>
+                <th>Break Hour</th>
+
+            </tr>
+            <tr> <!--Row 1-->
+                <td><input type="date" name="work_date1" disabled></td>
+                <td>
+                    <select name="work_hour1" class="workHourSelect">
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                    </select>
+                </td>
+                <td>
+                    <select name="break_hour1" class="breakHourSelect">
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                    </select>
+                </td>
+
+                <tr><!--Row 2-->
+                <td><input type="date" name="work_date2" disabled></td>
+                <td>
+                    <select name="work_hour2" class="workHourSelect">
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10</option>
+                    </select>
+                </td>
+                <td>
+                    <select name="break_hour2" class="breakHourSelect">
+                        <option value="0">0</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                    </select>
+                </td>
+                </tr>
+
+                <tr><!--Row 3-->
+                    <td><input type="date" name="work_date3" disabled></td>
+                    <td>
+                        <select name="work_hour3" class="workHourSelect">
+                            <option value="0">0</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
+                        </select>
+                    </td>
+                    <td>
+                        <select name="break_hour3" class="breakHourSelect">
+                            <option value="0">0</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                        </select>
+                    </td>
+                    </tr>
+
+                    <tr> <!--Row 4-->
+                        <td><input type="date" name="work_date4" disabled></td>
+                        <td>
+                            <select name="work_hour4" class="workHourSelect">
+                                <option value="0">0</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                                <option value="6">6</option>
+                                <option value="7">7</option>
+                                <option value="8">8</option>
+                                <option value="9">9</option>
+                                <option value="10">10</option>
+                            </select>
+                        </td>
+                        <td>
+                            <select name="break_hour4" class="breakHourSelect">
+                                <option value="0">0</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                            </select>
+                        </td>
+        
+                        <tr><!--Row 5-->
+                        <td><input type="date" name="work_date5" disabled></td>
+                        <td>
+                            <select name="work_hour5" class="workHourSelect">
+                                <option value="0">0</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                                <option value="6">6</option>
+                                <option value="7">7</option>
+                                <option value="8">8</option>
+                                <option value="9">9</option>
+                                <option value="10">10</option>
+                            </select>
+                        </td>
+                        <td>
+                            <select name="break_hour5" class="breakHourSelect">
+                                <option value="0">0</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                            </select>
+                        </td>
+                        </tr>
+        
+                        <tr><!--Row 6-->
+                            <td><input type="date" name="work_date6" disabled></td>
+                            <td>
+                                <select name="work_hour6" class="workHourSelect">
+                                    <option value="0">0</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                    <option value="6">6</option>
+                                    <option value="7">7</option>
+                                    <option value="8">8</option>
+                                    <option value="9">9</option>
+                                    <option value="10">10</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select name="break_hour6" class="breakHourSelect">
+                                    <option value="0">0</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                </select>
+                            </td>
+                        </tr>
+
+                        <tr><!--Row 7-->
+                            <td><input type="date" name="work_date7" disabled></td>
+                            <td>
+                                <select name="work_hour7" class="workHourSelect">
+                                    <option value="0">0</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                    <option value="6">6</option>
+                                    <option value="7">7</option>
+                                    <option value="8">8</option>
+                                    <option value="9">9</option>
+                                    <option value="10">10</option>
+                                </select>
+                            </td>
+                            <td>
+                                <select name="break_hour7" class="breakHourSelect">
+                                    <option value="0">0</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                </select>
+                            </td>
+                        </tr>
+            </tr>
+        </table>
+       
+
+
+        <div class="invalid" >
+            {{error_message}}
+        </div>
+
+        <button id="generate">Generate</button>
+        
+       </form>
+        </div>
+      </div>
+
+      <script>
+        // autofill payperiod end date & each row date
+        function autoFillDates() {
+            const startDate = document.querySelector('input[name="payperiod_start"]').value;
+            const endDateInput = document.querySelector('input[name="payperiod_end"]');
+            
+            if (startDate) {
+                // Convert start date to Date object
+                const start = new Date(startDate);
+
+                // Calculate the end date (add 6 days for a 7-day pay period)
+                const end = new Date(start);
+                end.setDate(start.getDate() + 6); // 7-day period = start date + 6 days
+                const formattedEndDate = end.toISOString().split('T')[0];
+                endDateInput.value = formattedEndDate;
+
+                // Loop through work_date1 to work_date7 and fill in dates
+                for (let i = 1; i <= 7; i++) {
+                    const workDateInput = document.querySelector(`input[name="work_date${i}"]`);
+
+                    // Create a new date for each work day (incrementing by 1 day for each)
+                    const workDate = new Date(start);
+                    workDate.setDate(start.getDate() + (i - 1));
+
+                    // Format the work date as YYYY-MM-DD (required for input[type="date"])
+                    const formattedWorkDate = workDate.toISOString().split('T')[0];
+
+                    // Set the calculated work date value in the respective input field
+                    workDateInput.value = formattedWorkDate;
+                }
+            }
+        }
+
+        
+    </script>
+    
+
+{% endblock %}

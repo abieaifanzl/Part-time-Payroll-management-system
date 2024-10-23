@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+
+    <style>
+
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+:root {
+    --primary: #F3525A;
+    --secondary: #F6F6F6;
+    --light: #FFFFFF;
+    --dark: #152440;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins','Open Sans',Arial;
+}
+
+body {
+    min-height: 100vh;
+    background-color: var(--secondary);
+    background-size: cover;
+    background-position: center;
+}
+
+
+.nav-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 25px 1.5rem;
+    height: 70px;
+    background-color: var(--light);
+    font-family: 'Barlow', sans-serif;
+    padding: 35px 15px;
+    font-size: 18px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.742);
+    position: sticky;
+    top: 0; 
+    z-index: 1000; 
+}
+
+.logo {
+    color: var(--primary);
+    font-weight: bold;
+    text-decoration: none;
+    text-transform: uppercase;
+    font-size: 2.25rem;
+    margin-left: 36px;
+}
+
+.fas {
+    color: var(--light);
+    font-size: 1.25rem;
+    cursor: pointer;
+}
+
+.list-nav-bar {
+    list-style: none;
+    text-transform: uppercase;
+    display: flex;
+    gap: 20px;
+}
+
+.list-item a {
+    cursor: pointer;
+    font-size: 1.25rem;
+    text-decoration: none;
+    color: var(--dark);
+    text-align: center;
+    margin-left: 0.5rem;
+    letter-spacing: 0.1rem;
+}
+
+.list-item a:hover {
+    color: var(--primary);
+}
+
+
+
+
+@media screen and (max-width: 768px) {
+
+    .list-item a {
+        font-size: 0.875rem;
+    }
+
+    .logo {
+        font-size: 0.875rem;
+    }
+}
+
+
+/* content */
+
+
+@import url('https://fonts.googleapis.com/css?family=Roboto:200,300,400,600,700');
+
+#bodyform {
+
+width: 80vw; /* Set a width less than 100vw for centering */
+max-width: 1200px; /* Optional: set a max width */
+margin: auto; /* Center horizontally */
+padding: 10px;
+height: auto;
+display: flex; /* Flexbox for vertical centering */
+justify-content: center;
+align-items: center;
+}
+
+#payslip {
+	width: calc( 8.5in - 80px );
+	height: auto;
+	background: #fff;
+	padding: 30px 40px;
+}
+
+#title {
+	margin-bottom: 20px;
+	font-size: 38px;
+	font-weight: 600;
+}
+
+#scope {
+	border-top: 1px solid #ccc;
+	border-bottom: 1px solid #ccc;
+	padding: 7px 0 4px 0;
+	display: flex;
+	justify-content: space-around;
+}
+
+#scope > .scope-entry {
+	text-align: center;
+}
+
+#scope > .scope-entry > .value {
+	font-size: 14px;
+	font-weight: 700;
+}
+
+.content {
+	display: flex;
+	border-bottom: 1px solid #ccc;
+	height:auto;
+}
+.right-panel {
+    width: 100%;
+	padding: 10px 0  0 16px;
+}
+.left-panel {
+    border-right: 1px solid #ccc;
+	min-width: 50%;
+	padding: 10px 16px 0 0;
+}
+
+.amount {
+	text-align: right;
+	font-weight: 700;
+	width: 90px;
+    padding: 3px 0 2px 0;
+	margin-bottom: 10px;
+	background: rgba(0, 0, 0, 0.04);
+}
+
+/*Print Button */
+
+.btn-primary {
+  display: block;
+  clear: both;
+  width: 100%;
+  padding: 10px 16px;
+  font-size: 18px;
+  line-height: 1.33;
+  border: none;
+  border-radius: 6px;
+  text-align: center;
+  cursor: pointer;
+  clear: none;
+    display: inline-block;
+    width: auto;
+    max-width: 100%;
+}
+.form-btns {
+  text-align: center;
+  padding-top: 1.5em;
+  margin-bottom: 1.5em;
+}
+
+.form-btns .btn {
+  border-radius: 25px;
+  background: linear-gradient(to bottom left, #EF8D9C 40%, #FFC39E 100%);
+  color: #ffffff;
+  border: 0px solid ;
+}
+
+
+.btn:hover {
+  background: linear-gradient(to bottom left, #FFC39E 40%, #EF8);
+
+}
+
+@media print{
+    .nav-bar, .btn {
+        display: none;
+    }
+    #employee, .scope, .content {
+        font-size: 10px;
+        width:100%;
+    }
+    
+}
+
+    </style>
+
+
+</head>
+<body>
+
+    <!--Nav Bar-->
+    <nav class="nav-bar">
+        <div class="icon-nav">
+            
+            <a href="{% url 'userhome' %}" style="text-decoration: none"><span class="logo"><i class="far fa-smile text-primary me-2" style="color: #F3525A;margin-right: 10px;"></i>Payeee</span></a>
+        </div>
+
+        <ul class="list-nav-bar active">
+            <li class="list-item"><a href="{% url 'userhome' %}">home</a></li>
+            <li class="list-item"><a href="{% url 'userprofilesetting' %}">profile</a></li>
+            <li class="list-item"><a href="{% url 'userpayslip' %}">payslip</a></li>
+            <li class="list-item"><a href="{% url 'userpayrollhistory' %}">history</a></li>
+        </ul>
+
+    </nav>
+
+
+    <!--End Nav Bar-->
+
+    <div id="bodyform">
+
+        <div id="payslip">
+            <div id="title">Payslip</div>
+        
+            <div id="employee">
+                <div id="ID">
+                    <p>Employee ID : {{ payslip_info.PTid_id}}</p>
+                </div>
+                <div id="Name">
+                    <p>EMployee Name : {{ payslip_info.PAYSLIPrecipient}}</p>
+                </div>
+            </div>
+        
+            <div id="scope">
+                <div class="scope-entry">
+                    <div class="title">PAY RUN</div>
+                    <div class="value">{{ payslip_info.PAYSLIPpayperiodend}}</div>
+                </div>
+                <div class="scope-entry">
+                    <div class="title">PAY PERIOD</div>
+                    <div class="value">{{ payslip_info.PAYSLIPpayperiodstart}}   To   {{ payslip_info.PAYSLIPpayperiodend}}</div>
+                </div>
+            </div>
+        
+        
+            <div class="content">
+        
+                <div class="left-panel">
+        
+                    <!--For Weekdays-->
+                        <div class="entry">
+                            <div class="Total work hour weekday">
+                                <p>Total work hour weekday: </p>
+                                <div class="detail">{{ payslip_info.PAYSLIPweekdaywh}} hour</div>
+                            </div>
+                            <div class="Total break hour">
+                                <p>Total break hour: </p>
+                                <div class="detail">{{ payslip_info.PAYSLIPweekdaybr}} hour</div>
+                            </div>
+                            
+                        </div>
+                        <br>
+                        <div class="salary">
+                            
+                        <div class="net_pay">
+                            <div class="entry">
+                                <div class="label">SALARY</div>
+                                <div class="detail"></div>
+                                <div class="rate">RM8/hour</div>
+                                <div class="amount">RM {{ payslip_info.PAYSLIPweekdaysalary}}</div>
+                                <br>
+                            </div>
+                        </div>
+                </div>
+            </div>
+            
+        
+            <div class="right-panel">
+        
+                <!--For Weekend-->
+                <div class="entry">
+                    <div class="Total work hour weekday">
+                        <p>Total work hour weekend: </p>
+                        <div class="detail">{{ payslip_info.PAYSLIPweekendwh}} hour</div>
+                    </div>
+                    <div class="Total break hour">
+                        <p>Total break hour: </p>
+                        <div class="detail">{{ payslip_info.PAYSLIPweekendbr}} hour</div>
+                    </div>
+                    
+                </div>
+                <br>
+                <div class="salary">
+                    
+                <div class="net_pay">
+                    <div class="entry">
+                        <div class="label">SALARY</div>
+                        <div class="detail"></div>
+                        <div class="rate">RM10/hour</div>
+                        <div class="amount">RM {{ payslip_info.PAYSLIPweekendsalary}}</div>
+                    </div>
+                </div>
+        
+        
+            </div>
+        
+            </div>
+        
+            
+        </div>
+        <div id="scope">
+        
+            <div class="scope-entry">
+                <div class="title">TOTAL SALARY</div>
+                <div class="value">RM {{ payslip_info.PAYSLIPtotalsalary}}</div>
+            </div>
+        
+        </div>
+        
+        <div class="form-btns clearfix" >
+            <div class="btn btn-primary" onclick="window.print()">PRINT</div>
+        </div>
+        
+        </div>
+
+
+
+</body>
+
+
+
+</html>

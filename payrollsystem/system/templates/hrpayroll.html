@@ -1,0 +1,247 @@
+{% extends "hrnavbar.html" %}
+
+
+
+{% block style %}
+<title>Payslip</title>
+
+<style>
+
+#bodyform {
+	background: #f0f0f0;
+	width: 100vw;
+	height: 100vh;
+	display: flex;
+	justify-content: center;
+    padding: 20px;
+    height: auto;
+}
+
+@import url('https://fonts.googleapis.com/css?family=Roboto:200,300,400,600,700');
+
+#payslip {
+	width: calc( 8.5in - 80px );
+	height: auto;
+	background: #fff;
+	padding: 30px 40px;
+}
+
+#title {
+	margin-bottom: 20px;
+	font-size: 38px;
+	font-weight: 600;
+}
+
+#scope {
+	border-top: 1px solid #ccc;
+	border-bottom: 1px solid #ccc;
+	padding: 7px 0 4px 0;
+	display: flex;
+	justify-content: space-around;
+}
+
+#scope > .scope-entry {
+	text-align: center;
+}
+
+#scope > .scope-entry > .value {
+	font-size: 14px;
+	font-weight: 700;
+}
+
+.content {
+	display: flex;
+	border-bottom: 1px solid #ccc;
+	height:auto;
+}
+.right-panel {
+    width: 100%;
+	padding: 10px 0  0 16px;
+}
+.left-panel {
+    border-right: 1px solid #ccc;
+	min-width: 50%;
+	padding: 10px 16px 0 0;
+}
+
+.amount {
+	text-align: right;
+	font-weight: 700;
+	width: 90px;
+    padding: 3px 0 2px 0;
+	margin-bottom: 10px;
+	background: rgba(0, 0, 0, 0.04);
+}
+
+/*Print Button */
+
+.btn-primary {
+  display: block;
+  clear: both;
+  width: 100%;
+  padding: 10px 16px;
+  font-size: 18px;
+  line-height: 1.33;
+  border: none;
+  border-radius: 6px;
+  text-align: center;
+  cursor: pointer;
+  clear: none;
+    display: inline-block;
+    width: auto;
+    max-width: 100%;
+}
+.form-btns {
+  text-align: center;
+  padding-top: 1.5em;
+  margin-bottom: 1.5em;
+}
+
+.form-btns .btn {
+  border-radius: 25px;
+  background: linear-gradient(to bottom left, #EF8D9C 40%, #FFC39E 100%);
+  color: #ffffff;
+  border: 0px solid ;
+}
+
+
+.btn:hover {
+  background: linear-gradient(to bottom left, #FFC39E 40%, #EF8);
+
+}
+
+a {
+    text-decoration: none;
+    color: white;
+}
+
+</style>
+
+{% endblock %}
+
+
+
+
+{% block form %}
+
+<div id="bodyform">
+
+<div id="payslip">
+    <div id="title">Payslip</div>
+
+    <div id="employee">
+        <div id="ID">
+            <p>Employee ID : {{staffid}}<!--Retrieve db--></p>
+        </div>
+        <div id="Name">
+            <p>EMployee Name : {{staffname}}<!--Retrieve db--></p>
+        </div>
+    </div>
+
+    <div id="scope">
+        <div class="scope-entry">
+            <div class="title">PAY RUN</div>
+            <div class="value">{{payperiodend}}</div>
+        </div>
+        <div class="scope-entry">
+            <div class="title">PAY PERIOD</div>
+            <div class="value">{{payperiodstart}}  To  {{payperiodend}}</div>
+        </div>
+    </div>
+
+
+    <div class="content">
+
+        <div class="left-panel">
+
+            <!--For Weekdays-->
+                <div class="entry">
+                    <div class="Total work hour weekday">
+                        <p>Total work hour weekday: </p>
+                        <div class="detail">{{Totalweekdaywork}} HOURS<!--Retrieve db--></div>
+                    </div>
+                    <div class="Total break hour">
+                        <p>Total break hour: </p>
+                        <div class="detail">{{Totalweekdaybreak}} HOURS<!--Retrieve db--></div>
+                    </div>
+                    
+                </div>
+                <br>
+                <div class="salary">
+                    
+                <div class="net_pay">
+                    <div class="entry">
+                        <div class="label">SALARY</div>
+                        <div class="detail"></div>
+                        <div class="rate">RM8/hour</div>
+                        <div class="amount">RM {{weekdaysalary}}</div>
+                        <br>
+                    </div>
+                </div>
+        </div>
+    </div>
+    
+
+    <div class="right-panel">
+
+        <!--For Weekend-->
+        <div class="entry">
+            <div class="Total work hour weekday">
+                <p>Total work hour weekend: </p>
+                <div class="detail">{{Totalweekendwork}} HOURS<!--Retrieve db--></div>
+            </div>
+            <div class="Total break hour">
+                <p>Total break hour: </p>
+                <div class="detail">{{Totalweekendbreak}} HOURS<!--Retrieve db--></div>
+            </div>
+            
+        </div>
+        <br>
+        <div class="salary">
+            
+        <div class="net_pay">
+            <div class="entry">
+                <div class="label">SALARY</div>
+                <div class="detail"></div>
+                <div class="rate">RM10/hour</div>
+                <div class="amount">RM {{weekendsalary}}</div>
+            </div>
+        </div>
+
+
+    </div>
+
+    </div>
+
+    
+</div>
+<div id="scope">
+
+    <div class="scope-entry">
+        <div class="title">TOTAL WORK HOUR</div>
+        <div class="value">{{totalworkhour}}</div>
+    </div>
+
+    <div class="scope-entry">
+        <div class="title">TOTAL BREAK HOUR</div>
+        <div class="value">{{totalbreakhour}}</div>
+    </div>
+
+</div>
+
+<div id="scope">
+
+    <div class="scope-entry">
+        <div class="title">TOTAL SALARY</div>
+        <div class="value">RM {{totalsalary}}</div>
+    </div>
+
+</div>
+
+<div class="form-btns clearfix" >
+    <div class="btn btn-primary" ><a href="{% url 'hrgeneratepayroll' %}">BACK</a></div>
+</div>
+
+</div>
+
+{% endblock %}
